@@ -1,0 +1,10 @@
+- model: "NVIDIA GeForce RTX 3070 Ti"
+  vram: 8
+- model: "NVIDIA GeForce RTX 3080 Ti"
+  vram: 12
+- model: "NVIDIA GeForce RTX 4070"
+  vram: 12
+- model: "NVIDIA GeForce RTX 4080 SUPER"
+  vram: 16
+- model: "NVIDIA GeForce RTX 4090"
+  vram: 24

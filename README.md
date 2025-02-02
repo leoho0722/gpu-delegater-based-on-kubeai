@@ -9,6 +9,12 @@ This repository stores the `An Improved Design of NVIDIA GPU Dynamic LLM Task Sc
 - Ubuntu 22.04.3 LTS
 - Python 3.10.12
 
+#### Create a virtual environment
+
+```bash
+sudo bash build-env.sh
+```
+
 ### Kubernetes
 
 The Kubernetes cluster has one master node and two worker nodes.
@@ -62,3 +68,13 @@ The Kubernetes cluster has one master node and two worker nodes.
   - NVIDIA Container Toolkit 1.17.2
   - NVIDIA GPU Operator 24.9.1
   - KubeAI 0.11.0
+
+## Run
+
+```bash
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Run the client
+python app.py --prompt "What is the largest country in the world?"
+```

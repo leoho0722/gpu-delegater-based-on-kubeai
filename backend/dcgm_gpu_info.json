@@ -1,0 +1,327 @@
+{
+    "DCGM_FI_DEV_FB_FREE": {
+        "status": "success",
+        "data": {
+            "resultType": "vector",
+            "result": [
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "550.54.15",
+                        "Hostname": "ubuntu-d830mt",
+                        "UUID": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+                        "__name__": "DCGM_FI_DEV_FB_FREE",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.0.80:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-d830mt",
+                        "modelName": "NVIDIA GeForce RTX 3070 Ti",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.315,
+                        "7955"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+                        "__name__": "DCGM_FI_DEV_FB_FREE",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.315,
+                        "11996"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+                        "__name__": "DCGM_FI_DEV_FB_FREE",
+                        "device": "nvidia1",
+                        "gpu": "1",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:03:00.0"
+                    },
+                    "value": [
+                        1737021119.315,
+                        "11996"
+                    ]
+                }
+            ]
+        }
+    },
+    "DCGM_FI_DEV_FB_USED": {
+        "status": "success",
+        "data": {
+            "resultType": "vector",
+            "result": [
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "550.54.15",
+                        "Hostname": "ubuntu-d830mt",
+                        "UUID": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+                        "__name__": "DCGM_FI_DEV_FB_USED",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.0.80:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-d830mt",
+                        "modelName": "NVIDIA GeForce RTX 3070 Ti",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "11"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+                        "__name__": "DCGM_FI_DEV_FB_USED",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "12"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+                        "__name__": "DCGM_FI_DEV_FB_USED",
+                        "device": "nvidia1",
+                        "gpu": "1",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:03:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "12"
+                    ]
+                }
+            ]
+        }
+    },
+    "DCGM_FI_DEV_GPU_TEMP": {
+        "status": "success",
+        "data": {
+            "resultType": "vector",
+            "result": [
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "550.54.15",
+                        "Hostname": "ubuntu-d830mt",
+                        "UUID": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+                        "__name__": "DCGM_FI_DEV_GPU_TEMP",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.0.80:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-d830mt",
+                        "modelName": "NVIDIA GeForce RTX 3070 Ti",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "47"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+                        "__name__": "DCGM_FI_DEV_GPU_TEMP",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "43"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+                        "__name__": "DCGM_FI_DEV_GPU_TEMP",
+                        "device": "nvidia1",
+                        "gpu": "1",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:03:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "39"
+                    ]
+                }
+            ]
+        }
+    },
+    "DCGM_FI_DEV_GPU_UTIL": {
+        "status": "success",
+        "data": {
+            "resultType": "vector",
+            "result": [
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "550.54.15",
+                        "Hostname": "ubuntu-d830mt",
+                        "UUID": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+                        "__name__": "DCGM_FI_DEV_GPU_UTIL",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.0.80:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-d830mt",
+                        "modelName": "NVIDIA GeForce RTX 3070 Ti",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "0"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+                        "__name__": "DCGM_FI_DEV_GPU_UTIL",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "0"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+                        "__name__": "DCGM_FI_DEV_GPU_UTIL",
+                        "device": "nvidia1",
+                        "gpu": "1",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:03:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "0"
+                    ]
+                }
+            ]
+        }
+    },
+    "DCGM_FI_DEV_POWER_USAGE": {
+        "status": "success",
+        "data": {
+            "resultType": "vector",
+            "result": [
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "550.54.15",
+                        "Hostname": "ubuntu-d830mt",
+                        "UUID": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+                        "__name__": "DCGM_FI_DEV_POWER_USAGE",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.0.80:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-d830mt",
+                        "modelName": "NVIDIA GeForce RTX 3070 Ti",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "16.938"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+                        "__name__": "DCGM_FI_DEV_POWER_USAGE",
+                        "device": "nvidia0",
+                        "gpu": "0",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:01:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "6.169"
+                    ]
+                },
+                {
+                    "metric": {
+                        "DCGM_FI_DRIVER_VERSION": "535.129.03",
+                        "Hostname": "ubuntu-ms-7d98",
+                        "UUID": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+                        "__name__": "DCGM_FI_DEV_POWER_USAGE",
+                        "device": "nvidia1",
+                        "gpu": "1",
+                        "instance": "10.244.1.14:9400",
+                        "job": "gpu-metrics",
+                        "kubernetes_node": "ubuntu-ms-7d98",
+                        "modelName": "NVIDIA GeForce RTX 4070",
+                        "pci_bus_id": "00000000:03:00.0"
+                    },
+                    "value": [
+                        1737021119.313,
+                        "4.142"
+                    ]
+                }
+            ]
+        }
+    }
+}

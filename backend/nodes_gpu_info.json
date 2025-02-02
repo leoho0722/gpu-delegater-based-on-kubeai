@@ -1,0 +1,36 @@
+{
+    "ubuntu-d830mt": [
+        {
+            "index": "cuda:0",
+            "uuid": "GPU-956ed35b-d92b-df08-0aa1-9a542e58350b",
+            "name": "NVIDIA GeForce RTX 3070 Ti",
+            "free_memory": 7955,
+            "used_memory": 11,
+            "temperature": 46,
+            "memory_usage": 0,
+            "power_usage": 17
+        }
+    ],
+    "ubuntu-ms-7d98": [
+        {
+            "index": "cuda:0",
+            "uuid": "GPU-67b02881-4c95-3576-6996-9a3f6c30abdc",
+            "name": "NVIDIA GeForce RTX 4070",
+            "free_memory": 11996,
+            "used_memory": 12,
+            "temperature": 40,
+            "memory_usage": 0,
+            "power_usage": 6
+        },
+        {
+            "index": "cuda:1",
+            "uuid": "GPU-90416dcd-a5d6-8f79-48d9-1ead45f5c327",
+            "name": "NVIDIA GeForce RTX 4070",
+            "free_memory": 11996,
+            "used_memory": 12,
+            "temperature": 39,
+            "memory_usage": 0,
+            "power_usage": 4
+        }
+    ]
+}

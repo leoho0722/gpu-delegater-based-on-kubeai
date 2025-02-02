@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama-parameters-worker
+  namespace: default
+  labels:
+    app: ollama-parameters-worker
+spec:
+  selector:
+    matchLabels:
+      app: ollama-parameters-worker
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ollama-parameters-worker
+    spec:
+      containers:
+        - name: ollama-parameters-worker
+          image: leoho0722/ollama-parameters-worker:0.2.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+          ports:
+            - containerPort: 11434
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-parameters-worker
+  namespace: default
+spec:
+  selector:
+    app: ollama-parameters-worker
+  type: NodePort
+  ports:
+    - name: ollama-parameters-worker
+      protocol: TCP
+      port: 11434
+      targetPort: 11434
+      nodePort: 31434
+---
+
