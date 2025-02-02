@@ -23,6 +23,7 @@ The Kubernetes cluster has one master node and two worker nodes.
   - Ubuntu 22.04.3 LTS
   - Kubernetes 1.31.3
   - containerd 1.7.24
+  - Flannel 0.26.1
 
 #### Worker Node 1
 
@@ -35,6 +36,7 @@ The Kubernetes cluster has one master node and two worker nodes.
   - Ubuntu 22.04.3 LTS
   - Kubernetes 1.31.3
   - containerd 1.7.24
+  - Flannel 0.26.1
   - NVIDIA Driver 550.54.15
   - CUDA 12.4
   - cuDNN 9.1.70
@@ -53,6 +55,7 @@ The Kubernetes cluster has one master node and two worker nodes.
   - Ubuntu 22.04.3 LTS
   - Kubernetes 1.31.3
   - containerd 1.7.24
+  - Flannel 0.26.1
   - NVIDIA Driver 535.129.03
   - CUDA 12.2
   - cuDNN 9.1.70
