@@ -76,9 +76,9 @@ jobs:
       - name: Extract version from registry
         id: version
         run: |
-          REPOSITORY="${{ steps.service-name.outputs.service_name }}"
+          PACKAGE_NAME="${{ steps.service-name.outputs.service_name }}"
           LATEST_TAG=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/user/packages/container/${REPOSITORY}/versions" | \
+            "https://api.github.com/user/packages/container/${PACKAGE_NAME}/versions" | \
             jq -r '.[].metadata.container.tags[]' | \
             grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
             sort -V | tail -n1)
