@@ -1,0 +1,11 @@
+FROM ollama/ollama:0.5.7
+
+LABEL org.opencontainers.image.source=https://github.com/leoho0722/gpu-delegater-based-on-kubeai
+LABEL org.opencontainers.image.ref.name="ollama-builtin-gemma2-27b"
+LABEL org.opencontainers.image.version="0.1.0"
+LABEL org.opencontainers.image.description="This image is used for KubeAI Ollama Model Pod of GPU Delegater based on KubeAI, using ollama/ollama:0.5.7 as base image and builtin gemma2:27b LLM model"
+
+# Serve Ollama and Pull Ollama Model
+RUN bash -c "ollama serve &" && \
+    sleep 5 && \
+    ollama pull gemma2:27b

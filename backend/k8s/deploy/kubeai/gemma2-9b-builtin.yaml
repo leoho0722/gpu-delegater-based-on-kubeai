@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   features: [TextGeneration]
-  image: leoho0722/ollama-builtin-gemma2-9b:0.1.0
+  image: ghcr.io/leoho0722/ollama-builtin-gemma2-9b:0.1.0
   url: ollama://gemma2:9b
   engine: OLlama
   replicas: 1

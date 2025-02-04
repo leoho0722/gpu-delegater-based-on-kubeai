@@ -1,0 +1,15 @@
+FROM ollama/ollama:0.5.7
+
+LABEL org.opencontainers.image.source=https://github.com/leoho0722/gpu-delegater-based-on-kubeai
+LABEL org.opencontainers.image.ref.name="ollama-parameters-worker"
+LABEL org.opencontainers.image.version="0.2.0"
+LABEL org.opencontainers.image.description="This Image is used for Kubernetes Ollama Parameters Worker based on GPU Delegater on KubeAI, using ollama/ollama:0.5.7 as the base image, including gemma2:2b, gemma2:9b, gemma2:27b, llama3.1:8b, llama3.2:3b LLM model"
+
+# Serve Ollama and Pull Ollama Model
+RUN bash -c "ollama serve &" && \
+    sleep 5 && \
+    ollama pull gemma2:2b && \
+    ollama pull gemma2:9b && \
+    ollama pull gemma2:27b && \
+    ollama pull llama3.1:8b && \
+    ollama pull llama3.2:3b
