@@ -1,0 +1,101 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'backend/k8s/deploy/dockerfiles/Dockerfile-*'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'backend/k8s/deploy/dockerfiles/Dockerfile-*'
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          
+      - name: Get changed Dockerfiles
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: |
+            backend/k8s/deploy/dockerfiles/Dockerfile-*
+            
+      - name: Set build matrix
+        id: set-matrix
+        run: |
+          PATHS=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | jq -R -s -c 'split("\n")[:-1]')
+          echo "matrix=${PATHS}" >> $GITHUB_OUTPUT
+
+  build:
+    needs: docker-build
+    if: needs.docker-build.outputs.matrix != '[]' && needs.docker-build.outputs.matrix != ''
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: ${{ fromJson(needs.docker-build.outputs.matrix) }}
+        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Get service name
+        id: service-name
+        run: |
+          # 從 Dockerfile 檔名提取服務名稱
+          DOCKERFILE_PATH=${{ matrix.dockerfile }}
+          SERVICE_NAME=$(basename ${DOCKERFILE_PATH} | sed 's/^Dockerfile-//')
+          echo "service_name=${SERVICE_NAME}" >> $GITHUB_OUTPUT
+          echo "Service name extracted: ${SERVICE_NAME}"
+          
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract version from registry
+        id: version
+        run: |
+          REPOSITORY="ghcr.io/${{ github.repository_owner }}/${{ steps.service-name.outputs.service_name }}"
+          LATEST_TAG=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/user/packages/container/${REPOSITORY}/versions" | \
+            jq -r '.[].metadata.container.tags[]' | \
+            grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
+            sort -V | tail -n1)
+          
+          if [ -z "$LATEST_TAG" ]; then
+            NEW_TAG="0.1.0"
+          else
+            # 增加次版本號
+            IFS='.' read -r major minor patch <<< "$LATEST_TAG"
+            NEW_TAG="${major}.$((minor + 1)).0"
+          fi
+          
+          echo "new_tag=${NEW_TAG}" >> $GITHUB_OUTPUT
+          
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/${{ steps.service-name.outputs.service_name }}
+          tags: |
+            type=raw,value=${{ steps.version.outputs.new_tag }}
+            
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: backend/k8s/deploy/dockerfiles
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
