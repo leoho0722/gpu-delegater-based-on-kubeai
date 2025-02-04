@@ -9,3 +9,4 @@ LABEL org.opencontainers.image.description="This image is used for KubeAI Ollama
 RUN bash -c "ollama serve &" && \
     sleep 5 && \
     ollama pull llama3.2:1b
+    
