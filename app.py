@@ -118,7 +118,7 @@ def parsed_args():
     parser.add_argument(
         "--system_prompt",
         type=str,
-        default="You are a helpful assistant that translates English to Traditional Chinese. Translate the user sentence.",
+        default="You are a helpful assistant that answers user questions. Please answer according to the user's question using Traditional Chinese.",
     )
     parser.add_argument(
         "--user_prompt",
