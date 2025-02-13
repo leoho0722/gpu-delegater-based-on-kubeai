@@ -12,7 +12,7 @@ This repository stores the `An Improved Design of NVIDIA GPU Dynamic LLM Task Sc
 #### Create a virtual environment
 
 ```bash
-sudo bash build-env.sh
+make build-env
 ```
 
 ### Kubernetes
@@ -23,7 +23,7 @@ The Kubernetes cluster has one master node and two worker nodes.
 
 - Hardware:
   - CPU: Intel Core i7 7700 4C/8T
-  - Memory: 32GB
+  - Memory: 32GB DDR4
   - Disk: 2.5" 1TB SATA3 SSD
 - Software:
   - Ubuntu 22.04.3 LTS

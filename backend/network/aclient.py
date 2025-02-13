@@ -2,7 +2,7 @@ from typing import Any, Dict, List
 
 import httpx
 
-from shared.utils.network.exception import NetworkException
+from .exception import NetworkException
 
 
 def get_default_headers() -> Dict[str, str]:

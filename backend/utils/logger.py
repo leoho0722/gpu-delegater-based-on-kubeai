@@ -13,7 +13,7 @@ from logging import (
 )
 from logging.handlers import RotatingFileHandler
 
-from shared.const.format import MiB
+from .const.format import MiB
 
 
 class ColorfulLoggingFormatter(Formatter):
@@ -51,10 +51,10 @@ class PlainTextLoggingFormatter(Formatter):
         )
 
 
-class KubeAIKubernetesClientLogger:
+class KubeAIGPUDelegateLogger:
 
     def __init__(self, log_dir: str = "logs"):
-        """Initialize KubeAI Kubernetes Client Logger Instance
+        """Initialize KubeAI GPU Delegater Logger Instance
 
         Args:
             log_dir (str): The directory path to store the log file
@@ -62,7 +62,7 @@ class KubeAIKubernetesClientLogger:
 
         self.log_dir = log_dir
 
-        self.logger = getLogger("KubeAI Kubernetes Client")
+        self.logger = getLogger("KubeAI GPU Delegater")
         self.logger.setLevel(DEBUG)
 
         colorful_formatter = ColorfulLoggingFormatter()

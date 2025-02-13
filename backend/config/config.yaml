@@ -1,3 +1,11 @@
 version: "0.1.0"
 host: "0.0.0.0"
 port: 8000
+webui_url: "http://10.20.1.93:32000/api/v1"
+base_url: "http://10.20.1.93:32000/openai"
+timeout: 600.0
+user:
+  email: ""
+  password: ""
+ollama_parameters_worker_url: "http://10.20.1.93:31434"
+concurrent: 1

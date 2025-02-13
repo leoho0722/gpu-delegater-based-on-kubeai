@@ -1,5 +1,5 @@
 from config import parse_config, ServerConfig
-from controller import app
+from controllers import app
 
 if __name__ == "__main__":
     config: ServerConfig = parse_config()

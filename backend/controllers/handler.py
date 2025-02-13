@@ -1,18 +1,18 @@
 from fastapi.responses import JSONResponse, RedirectResponse
 
-from api import (
+from apis import (
     InferenceRequest, InferenceResponse,
     VersionResponse
 )
 from config import parse_config, ServerConfig
-from controller._app import app
-from route import Endpoints
-from shared.utils.logger import KubeAIKubernetesClientLogger
-from service import LLMService
-from service.exception import InvalidRequestError
+from ._app import app
+from exceptions import InvalidRequestError, InferenceError
+from routes import Endpoints
+from services.llm import LLMService
+from utils.logger import KubeAIGPUDelegateLogger
 
-logger = KubeAIKubernetesClientLogger()
-llm_service = LLMService()
+logger = KubeAIGPUDelegateLogger()
+llm_service = LLMService(logger=logger.getLogger())
 
 
 @app.get(Endpoints.ROOT.path)
@@ -48,11 +48,22 @@ async def inference(request: InferenceRequest):
 
         return JSONResponse(response_json, status_code=response.code)
     else:
-        response = InferenceResponse(
-            status="ok",
-            code=200,
-            chunk="test",
-        )
-        response_json = response.json(pretty=True)
+        try:
+            async for chunk in llm_service.inference(request):
+                response = InferenceResponse(
+                    status="ok",
+                    code=200,
+                    chunk=chunk,
+                )
+                response_json = response.json(pretty=True)
 
-        return JSONResponse(response_json, status_code=response.code)
+                return JSONResponse(response_json, status_code=response.code)
+        except InferenceError as e:
+            response = InferenceResponse(
+                status="failed",
+                code=e.status_code,
+                error_message=e.error,
+            )
+            response_json = response.json(pretty=True)
+
+            return JSONResponse(response_json, status_code=response.code)

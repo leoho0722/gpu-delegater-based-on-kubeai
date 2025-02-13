@@ -3,18 +3,17 @@ import asyncio
 import json
 from logging import Logger
 
+from backend.config import parse_config, ServerConfig
 from backend.gpu.dispatcher.dispatcher import GPUDispatcher
 from backend.k8s.kubeai import apply_kubeai_model_custom_resource
 from backend.llm.models import OllamaBuiltinModel
-from frontend.llm.auth import auth_signin, generate_openai_api_key
-from frontend.llm.chat import chat_completions
-from shared.config import parse_config, Config
-from shared.utils.logger import KubeAIKubernetesClientLogger
+from backend.llm.openai import auth_signin, generate_openai_api_key, chat_completions
+from backend.utils.logger import KubeAIGPUDelegateLogger
 
 
 async def run(
     logger: Logger,
-    config: Config,
+    config: ServerConfig,
     system_prompt: str,
     user_prompt: str,
     model_name: str
@@ -91,16 +90,16 @@ async def run(
     await asyncio.gather(*tasks)
 
 
-async def main(args: argparse.Namespace, config: Config):
+async def main(args: argparse.Namespace, config: ServerConfig):
     """Main function
 
     Args:
         args (`argparse.Namespace`): Parsed arguments
-        config (`Config`): Parsed configuration file
+        config (`ServerConfig`): Parsed configuration file
     """
 
     # Get Logger instance
-    logger = KubeAIKubernetesClientLogger()
+    logger = KubeAIGPUDelegateLogger()
     logger = logger.getLogger()
 
     # Running
