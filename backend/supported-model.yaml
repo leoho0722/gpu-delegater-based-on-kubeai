@@ -1,0 +1,6 @@
+models:
+  - "gemma2:2b"
+  - "gemma2:9b"
+  - "gemma2:27b"
+  - "llama3.1:8b"
+  - "llama3.2:3b"
