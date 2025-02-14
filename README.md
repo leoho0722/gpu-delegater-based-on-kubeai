@@ -69,12 +69,25 @@ The Kubernetes cluster has one master node and two worker nodes.
   - NVIDIA GPU Operator 24.9.1
   - KubeAI 0.11.0
 
-## Run
+## Serve
 
 ```bash
 # Activate the virtual environment
 source .venv/bin/activate
 
-# Run the client
-python app.py --prompt "What is the largest country in the world?"
+# Start the GPU Delegater server
+make serve
+```
+
+## Test
+
+```bash
+curl -X 'POST' \
+  'http://<SERVER_HOST>:<SERVER_PORT>/inference' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gemma2:2b", 
+    "system_prompt": "You are a helpful assistant that answers user questions. Please answer according to the user question using Traditional Chinese.", 
+    "user_prompt": "What is the largest country in the world?"
+  }'
 ```

@@ -8,7 +8,9 @@ class PrometheusClient:
     """Prometheus client to interact with the Prometheus server."""
 
     _url: str = None
+
     _timeout: float = None
+
     _aclient: httpx.AsyncClient = None
 
     def __init__(self, url: str, timeout: float = 60.0):

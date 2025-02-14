@@ -9,10 +9,10 @@ from kubernetes.client import (
 )
 from kubernetes.client.rest import ApiException
 
-from backend.k8s.api import corev1_api_list_namespaced_pod, corev1_api_read_namespaced_pod_log
-from backend.k8s.client import get_k8s_api_client, get_k8s_dynamic_client
-from backend.k8s.exception import KubernetesPodException
-from backend.k8s.kubeai.exception import KubeAIModelException
+from k8s.api import corev1_api_list_namespaced_pod, corev1_api_read_namespaced_pod_log
+from k8s.client import get_k8s_api_client, get_k8s_dynamic_client
+from k8s.exception import KubernetesPodException
+from k8s.kubeai.exception import KubeAIModelException
 
 
 def create_kubeai_model_custom_resource(model_cr_yaml: Dict[str, Any]):

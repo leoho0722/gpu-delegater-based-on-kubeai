@@ -44,7 +44,7 @@ class OllamaBuiltinModel(Enum):
     def yaml(self) -> Dict[str, str]:
         """Get the model YAML"""
 
-        prefix_path = "backend/k8s/deploy/kubeai"
+        prefix_path = "k8s/deploy/kubeai"
 
         match self.name:
             case "Gemma2_2B":
@@ -68,7 +68,7 @@ class OllamaBuiltinModel(Enum):
         return [
             OllamaBuiltinModel.Gemma2_2B,
             # OllamaBuiltinModel.Gemma2_9B,
-            # OllamaBuiltinModel.Gemma2_27B,
+            OllamaBuiltinModel.Gemma2_27B,
             # OllamaBuiltinModel.Llama3_1_8B,
             # OllamaBuiltinModel.Llama3_2_3B,
             # OllamaBuiltinModel.Llama3_3_70B

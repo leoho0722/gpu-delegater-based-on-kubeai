@@ -2,10 +2,12 @@ from typing import Any, Dict, List
 
 import yaml
 
-from backend.gpu.dispatcher.types import GPUModel, GPUModelList
+from gpu.dispatcher.types import GPUModel, GPUModelList
+
+GPU_MODEL_FILE_PATH = "gpu/dispatcher/gpu_models.yaml"
 
 
-def parse_gpu_models(file_path: str = "backend/gpu/dispatcher/gpu_models.yaml") -> GPUModelList:
+def parse_gpu_models() -> GPUModelList:
     """Parse GPU models from YAML file
 
     Args:
@@ -15,7 +17,7 @@ def parse_gpu_models(file_path: str = "backend/gpu/dispatcher/gpu_models.yaml") 
         parsed_gpu_models (`GPUModelList`): Parsed GPU models
     """
 
-    with open(file_path, "r") as f:
+    with open(GPU_MODEL_FILE_PATH, "r") as f:
         gpu_models: List[Dict[str, Any]] = yaml.safe_load(f)
         f.close()
 

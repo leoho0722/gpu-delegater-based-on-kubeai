@@ -13,7 +13,7 @@ from logging import (
 )
 from logging.handlers import RotatingFileHandler
 
-from .const.format import MiB
+from .constants.format import MiB
 
 
 class ColorfulLoggingFormatter(Formatter):

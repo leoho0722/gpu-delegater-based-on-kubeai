@@ -83,18 +83,18 @@ class LLMService:
         # 3-2. Get Available GPU resources (e.g., NVIDIA GPU)
 
         available_gpus = await self._gpu_dispatcher.get_available_gpus(model.value)
+        if available_gpus is None or len(available_gpus.gpu_nodes) < 1:
+            self.logger.error("No available GPU resources")
+            raise InferenceError("No available GPU resources", 500)
+        
         self.logger.debug(
             f"Available GPUs:\n{available_gpus.model_dump_json(indent=4)}"
         )
 
-        if len(available_gpus.gpu_nodes) < 1:
-            self.logger.error("No available GPU resources")
-            raise InferenceError("No available GPU resources", 500)
-
         # 3-2-1. Get the resource profile of the available GPU resources
 
         resourceProfile = self._gpu_dispatcher.convert_to_kubeai_gpu_resources_name(
-            selected_gpu=available_gpus.gpu_nodes[-1]
+            selected_gpu=available_gpus.gpu_nodes[0]
         )
         self.logger.info(f"Selected resource profile: {resourceProfile}")
 
@@ -135,7 +135,7 @@ class LLMService:
 
         import yaml
 
-        SUPPORTED_MODEL_FILEPATH = "backend/supported-model.yaml"
+        SUPPORTED_MODEL_FILEPATH = "supported-model.yaml"
 
         with open(SUPPORTED_MODEL_FILEPATH, "r") as f:
             supported_models: Dict[str, List[str]] = yaml.safe_load(f)

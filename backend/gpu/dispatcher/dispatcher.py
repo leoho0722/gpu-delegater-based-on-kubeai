@@ -3,18 +3,17 @@ import re
 from logging import Logger
 from typing import Dict, List
 
-from shared.const.format import iB
-from backend.gpu.dispatcher.parser import parse_gpu_models
-from backend.gpu.dispatcher.types import (
+from .parser import parse_gpu_models
+from .types import (
     GPU,
     GPUModelList,
     GPUNode,
     GPUNodeList,
     ParsedModelDetails
 )
-from backend.gpu.monitoring.prometheus import PrometheusClient
-from backend.llm.ollama import ModelDetails
-from backend.llm.ollama.client import OllamaClient
+from gpu.monitoring.prometheus import PrometheusClient
+from llm.ollama import OllamaClient, ModelDetails
+from utils.constants.format import iB
 
 
 class GPUDispatcher:

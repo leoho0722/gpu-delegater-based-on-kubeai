@@ -4,7 +4,7 @@ import yaml
 
 from .types import ServerConfig
 
-CONFIG_FILEPATH = "backend/config/config.yaml"
+CONFIG_FILEPATH = "config/config.yaml"
 
 
 def parse_config() -> ServerConfig:

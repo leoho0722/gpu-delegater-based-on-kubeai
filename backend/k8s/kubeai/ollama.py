@@ -6,9 +6,9 @@ from kubernetes.client import (
     V1ObjectMeta
 )
 
-from backend.k8s.api import corev1_api_list_namespaced_pod, get_pod_ip, watch_corev1_api_namespaced_pod
-from backend.k8s.exception import KubernetesPodException
-from backend.k8s.kubeai.exception import KubeAIOllamaModelPodException
+from k8s.api import corev1_api_list_namespaced_pod, get_pod_ip, watch_corev1_api_namespaced_pod
+from k8s.exception import KubernetesPodException
+from k8s.kubeai.exception import KubeAIOllamaModelPodException
 
 
 def list_kubeai_ollama_model_pod(namespace: str = "default") -> V1PodList:

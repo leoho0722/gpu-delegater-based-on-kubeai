@@ -9,8 +9,8 @@ from kubernetes.client import (
 )
 from kubernetes.client.rest import ApiException
 
-from backend.k8s.client import get_k8s_api_client
-from backend.k8s.exception import KubernetesPodException
+from k8s.client import get_k8s_api_client
+from k8s.exception import KubernetesPodException
 
 
 def corev1_api_list_namespaced_pod(namespace: str = 'default') -> V1PodList:
