@@ -1,7 +1,7 @@
-class KubeAIModelError(Exception):
+class UnsupportedModelError(Exception):
 
     def __init__(self, error: str, **kwargs):
-        """KubeAI Model Exception
+        """Unsupported model Exception.
 
         Args:
             error (`str`): Error message
@@ -15,10 +15,10 @@ class KubeAIModelError(Exception):
         """Original error message"""
 
 
-class KubeAIOllamaModelPodError(Exception):
+class UnsupportedLLMRuntimeError(Exception):
 
     def __init__(self, error: str, **kwargs):
-        """KubeAI Ollama Model Pod Exception
+        """Unsupported LLM runtime Exception.
 
         Args:
             error (`str`): Error message

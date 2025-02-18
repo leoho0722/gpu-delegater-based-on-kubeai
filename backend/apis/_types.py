@@ -1,4 +1,4 @@
-from typing import Any, Dict, Literal
+from typing import Any, Dict
 
 from pydantic import BaseModel
 
@@ -36,8 +36,12 @@ class BaseRequest(BaseModel):
 class BaseResponse(BaseModel):
     """Base response model"""
 
-    status: str = Literal["ok", "failed"]
-    """Response status"""
+    status: str
+    """Response status
+    
+    - ok: Success when Status code is 200
+    - failed: Failed when Status code is 4xx or 5xx
+    """
 
     code: int = 200
     """Response code"""

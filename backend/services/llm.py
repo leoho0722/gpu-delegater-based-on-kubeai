@@ -1,15 +1,22 @@
 import asyncio
 import json
 from logging import Logger
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
+from .network import NetworkService
 from apis import InferenceRequest
 from config import parse_config, ServerConfig
-from exceptions import InvalidRequestError, InferenceError, UnsupportedModelError
+from exceptions import (
+    InferenceError,
+    UnsupportedLLMRuntimeError,
+    UnsupportedModelError,
+    InvalidRequestError,
+    NetworkError
+)
 from gpu.dispatcher import GPUDispatcher
-from k8s.kubeai import apply_kubeai_model_custom_resource, KubeAIModelException
+from k8s.kubeai import apply_kubeai_model_custom_resource, KubeAIModelError
 from llm.models import OllamaBuiltinModel
-from llm.openai import auth_signin, generate_openai_api_key, chat_completions
+from llm.openai import OpenAIClient
 
 
 class LLMService:
@@ -18,11 +25,15 @@ class LLMService:
 
     _server_config: ServerConfig = None
 
+    _network_service: NetworkService = None
+
     _gpu_dispatcher: GPUDispatcher = None
 
     _openai_api_key: str = None
 
-    # ==================== Initialization ====================
+    _openai_client: OpenAIClient = None
+
+    # ==================== Constructor ====================
 
     def __init__(self, logger: Logger):
         """Initialize the LLM Service.
@@ -33,6 +44,11 @@ class LLMService:
 
         if not self._server_config:
             self._server_config = parse_config()
+
+        if not self._network_service:
+            self._network_service = NetworkService(
+                timeout=self._server_config.timeout
+            )
 
         self.logger = logger
 
@@ -62,6 +78,11 @@ class LLMService:
         except UnsupportedModelError as e:
             raise InvalidRequestError(e.error, 400, ** e.kwargs)
 
+        try:
+            self._validate_runtime(request.runtime)
+        except UnsupportedLLMRuntimeError as e:
+            raise InvalidRequestError(e.error, 400, ** e.kwargs)
+
     async def inference(self, request: InferenceRequest):
         """Run LLM Streaming Inference via GPU Delegater in Kubernetes.
 
@@ -82,11 +103,11 @@ class LLMService:
 
         # 3-2. Get Available GPU resources (e.g., NVIDIA GPU)
 
-        available_gpus = await self._gpu_dispatcher.get_available_gpus(model.value)
+        available_gpus = await self._gpu_dispatcher.get_available_gpus(model.value, request.runtime)
         if available_gpus is None or len(available_gpus.gpu_nodes) < 1:
             self.logger.error("No available GPU resources")
             raise InferenceError("No available GPU resources", 500)
-        
+
         self.logger.debug(
             f"Available GPUs:\n{available_gpus.model_dump_json(indent=4)}"
         )
@@ -107,12 +128,19 @@ class LLMService:
 
         try:
             apply_kubeai_model_custom_resource(patch_model_yaml)
-        except KubeAIModelException as e:
+        except KubeAIModelError as e:
             raise InferenceError(e.error, 500)
 
         # 3-4. Send a request to the KubeAI API server to inference using the created model
 
-        async for chunk in chat_completions(
+        if not self._openai_client:
+            self._openai_client = OpenAIClient(
+                base_url=self._server_config.base_url,
+                api_key=self._openai_api_key,
+                timeout=self._server_config.timeout
+            )
+
+        async for chunk in self._openai_client.chat_completions(
             model=patch_model_yaml["metadata"]["name"],
             system_prompt=request.system_prompt,
             user_prompt=request.user_prompt,
@@ -129,8 +157,8 @@ class LLMService:
         Args:
             model (`str`): The model name.
 
-        Raises: 
-            UnsupportedModelException: If the model is unsupported.
+        Raises:
+            UnsupportedModelError: If the model is unsupported.
         """
 
         import yaml
@@ -141,8 +169,23 @@ class LLMService:
             supported_models: Dict[str, List[str]] = yaml.safe_load(f)
             f.close()
 
-        if model not in supported_models["models"]:
+        if model not in supported_models["ollama"] or model not in supported_models["vllm"]:
             raise UnsupportedModelError(f"Model {model} is not supported.")
+
+    def _validate_runtime(self, runtime: str):
+        """Validate the LLM Runtime name.
+
+        Args:
+            runtime (`str`): The LLM Runtime name.
+
+        Raises:
+            UnsupportedLLMRuntimeError: If the LLM Runtime is unsupported.
+        """
+
+        if runtime.lower() not in ["ollama", "vllm"]:
+            raise UnsupportedLLMRuntimeError(
+                f"LLM Runtime {runtime} is not supported."
+            )
 
     async def _get_openai_api_key(self):
         """Get the OpenAI API key.
@@ -151,12 +194,55 @@ class LLMService:
             api_key (`str`): The OpenAI API key.
         """
 
-        token: Optional[str] = await auth_signin(self._server_config)
+        token: Optional[str] = await self._auth_signin()
         if token is None:
             raise RuntimeError("Failed to sign in")
 
-        api_key: Optional[str] = await generate_openai_api_key(self._server_config, token)
+        api_key: Optional[str] = await self._generate_openai_api_key(token)
         if api_key is None:
             api_key = token
 
         return api_key
+
+    async def _auth_signin(self) -> Optional[str]:
+        """Sign in to Open WebUI.
+
+        Returns:
+            token (`Optional[str]`): The generated Open WebUI token.
+        """
+
+        try:
+            response: Dict[str, Any] = await self._network_service.post(
+                url=f"{self._server_config.webui_url}/auths/signin",
+                json={
+                    "email": self._server_config.user.get("email"),
+                    "password": self._server_config.user.get("password"),
+                },
+            )
+            return response.get("token")
+        except NetworkError as e:
+            print(f"Failed to sign in, Error: {e}")
+            return None
+
+    async def _generate_openai_api_key(self, token: str) -> Optional[str]:
+        """Generate OpenAI API Key.
+
+        Args:
+            token (`str`): The Open WebUI token.
+
+        Returns:
+            api_key (`Optional[str]`): The generated OpenAI API key.
+        """
+
+        try:
+            response: Dict[str, Any] = await self._network_service.post(
+                url=f"{self._server_config.webui_url}/auths/api_key",
+                json={},
+                additional_headers=[
+                    {"Authorization": f"Bearer {token}"}
+                ],
+            )
+            return response.get("api_key")
+        except NetworkError as e:
+            print(f"Failed to generate OpenAI API Key, Error: {e}")
+            return None

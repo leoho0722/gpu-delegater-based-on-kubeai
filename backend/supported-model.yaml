@@ -1,6 +1,12 @@
-models:
+ollama:
   - "gemma2:2b"
   - "gemma2:9b"
   - "gemma2:27b"
   - "llama3.1:8b"
   - "llama3.2:3b"
+vllm:
+  - "google/gemma-2-2b-it"
+  - "google/gemma-2-9b-it"
+  - "google/gemma-2-27b-it"
+  - "meta-llama/Llama-3.1-8B-Instruct"
+  - "meta-llama/Llama-3.2-3B-Instruct"

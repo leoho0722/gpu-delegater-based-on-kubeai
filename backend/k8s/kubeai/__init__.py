@@ -7,8 +7,8 @@ from .api import (
     parse_kubeai_pod_log,
 )
 from .exception import (
-    KubeAIModelException,
-    KubeAIOllamaModelPodException
+    KubeAIModelError,
+    KubeAIOllamaModelPodError
 )
 from .ollama import (
     list_kubeai_ollama_model_pod,
@@ -26,12 +26,12 @@ __all__ = [
     "parse_kubeai_pod_log",
 
     # KubeAI Kubernetes Exception
-    "KubeAIModelException",
+    "KubeAIModelError",
 
     # KubeAI Ollama Kubernetes API
     "list_kubeai_ollama_model_pod",
     "list_kubeai_ollama_model_filtered_pod",
 
     # KubeAI Ollama Kubernetes Exception
-    "KubeAIOllamaModelPodException",
+    "KubeAIOllamaModelPodError",
 ]

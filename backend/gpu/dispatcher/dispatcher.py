@@ -94,11 +94,11 @@ class GPUDispatcher:
 
     # ============================== Public Methods ==============================
 
-    async def get_available_gpus(self, model_name: str) -> GPUNodeList:
+    async def get_available_gpus(self, model_name: str, runtime: str) -> GPUNodeList:
         gpu_node_list = await self._get_gpu_node_list()
 
         available_gpus: GPUNodeList = None
-        estimate_vram = await self._calc_model_estimate_vram(model_name)
+        estimate_vram = await self._calc_model_estimate_vram(model_name, runtime)
 
         for gpu_node in gpu_node_list.gpu_nodes:
             # 依照 VRAM 大小排序 GPU (從小到大)
@@ -366,13 +366,13 @@ class GPUDispatcher:
 
             existing_node.gpus = gpus
 
-    async def _calc_model_estimate_vram(self, model_name: str) -> int:
+    async def _calc_model_estimate_vram(self, model_name: str, runtime: str) -> int:
         '''
         根據模型的 `參數量` 與 `量化等級` 計算進行 LLM 推理所需的預估 GPU 記憶體
 
         Args:
-            model_name (`str`): 要使用 Ollama 進行 LLM Inference 的模型名稱
-            ollama_models (`ListResponse`): Ollama Models
+            model_name (`str`): 要進行 LLM Inference 的模型名稱
+            runtime (`str`): LLM Runtime
 
         Returns:
             estimate_vram (`int`): 預估 GPU 記憶體 (MiB)
@@ -409,31 +409,53 @@ class GPUDispatcher:
 
             return parsed_model_details
 
-        ollama_models = await self._ollama_client.list()
-        self.logger.info(
-            f"Ollama Models:\n{ollama_models.model_dump_json(indent=4)}"
-        )
+        def calc_estimate_vram(parsed_model_details: ParsedModelDetails) -> int:
+            '''
+            計算進行 LLM 推理所需的預估 GPU 記憶體
 
-        for model in ollama_models.models:
-            if model.model == model_name:
-                parsed_model_details = parse_model_details(model.details)
-                parameter_size = parsed_model_details.parameter_size
-                quantization_level = parsed_model_details.quantization_level
+            Args:
+                parsed_model_details (`ParsedModelDetails`): 解析後的模型資訊
 
-                # 計算公式參考：https://www.substratus.ai/blog/calculating-gpu-memory-for-llm
-                # `result = ((parameter_size * 4 / (32 / quantization_level)) * 1.2) * iB`
-                # `result` 為估計的 VRAM 使用量 (MiB)
-                # `parameter_size` 為模型參數量 (B)
-                # `quantization_level` 為模型量化等級
-                # `iB` 為 1024，用來將 GiB 轉換成 MiB
-                # `1.2` 多計算 20% 的 GPU 記憶體，避免記憶體不足
+            Returns:
+                estimate_vram (`int`): 預估 GPU 記憶體 (MiB)
+            '''
 
-                estimate_vram = math.ceil(
-                    ((parameter_size * 4 / (32 / quantization_level)) * 1.2) * iB
-                )
+            # 計算公式參考：https://www.substratus.ai/blog/calculating-gpu-memory-for-llm
+            # `result = ((parameter_size * 4 / (32 / quantization_level)) * 1.2) * iB`
+            # `result` 為估計的 VRAM 使用量 (MiB)
+            # `parameter_size` 為模型參數量 (B)
+            # `quantization_level` 為模型量化等級
+            # `iB` 為 1024，用來將 GiB 轉換成 MiB
+            # `1.2` 多計算 20% 的 GPU 記憶體，避免記憶體不足
 
+            parameter_size = parsed_model_details.parameter_size
+            quantization_level = parsed_model_details.quantization_level
+
+            estimate_vram = math.ceil(
+                ((parameter_size * 4 / (32 / quantization_level)) * 1.2) * iB
+            )
+
+            return estimate_vram
+
+        match runtime:
+            case "ollama":
+                ollama_models = await self._ollama_client.list()
                 self.logger.info(
-                    f"Model: {model_name}, Estimate VRAM: {estimate_vram} MiB"
+                    f"Ollama Models:\n{ollama_models.model_dump_json(indent=4)}"
                 )
 
-                return estimate_vram
+                for model in ollama_models.models:
+                    if model.model == model_name:
+                        parsed_model_details = parse_model_details(
+                            model.details)
+
+                        estimate_vram = calc_estimate_vram(
+                            parsed_model_details)
+
+                        self.logger.info(
+                            f"Model: {model_name}, Estimate VRAM: {estimate_vram} MiB"
+                        )
+
+                        return estimate_vram
+            case "vllm":
+                pass

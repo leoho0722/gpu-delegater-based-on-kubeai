@@ -5,7 +5,7 @@ from .api import (
     get_pod_ip
 )
 from .client import get_k8s_api_client, get_k8s_dynamic_client
-from .exception import KubernetesPodException
+from .exception import KubernetesPodError
 
 
 __all__ = [
@@ -20,5 +20,5 @@ __all__ = [
     "get_k8s_dynamic_client",
 
     # Kubernetes Exception
-    "KubernetesPodException",
+    "KubernetesPodError",
 ]

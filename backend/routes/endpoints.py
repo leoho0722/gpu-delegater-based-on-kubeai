@@ -3,6 +3,8 @@ from enum import Enum
 
 class Endpoints(Enum):
 
+    PATH_PREFIX = "/api"
+
     ROOT = "/"
 
     VERSION = "/version"

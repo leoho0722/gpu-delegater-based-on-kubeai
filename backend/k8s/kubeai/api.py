@@ -11,8 +11,8 @@ from kubernetes.client.rest import ApiException
 
 from k8s.api import corev1_api_list_namespaced_pod, corev1_api_read_namespaced_pod_log
 from k8s.client import get_k8s_api_client, get_k8s_dynamic_client
-from k8s.exception import KubernetesPodException
-from k8s.kubeai.exception import KubeAIModelException
+from k8s.exception import KubernetesPodError
+from k8s.kubeai.exception import KubeAIModelError
 
 
 def create_kubeai_model_custom_resource(model_cr_yaml: Dict[str, Any]):
@@ -37,7 +37,7 @@ def create_kubeai_model_custom_resource(model_cr_yaml: Dict[str, Any]):
         print(
             f"Failed to create KubeAI Model Custom Resource: {e}"
         )
-        raise KubeAIModelException(e.reason, e.body)
+        raise KubeAIModelError(e.reason, e.body)
 
 
 def list_kubeai_model_custom_resource(namespace: str = "default") -> List[Dict[str, Any]]:
@@ -79,7 +79,7 @@ def list_kubeai_model_custom_resource(namespace: str = "default") -> List[Dict[s
         print(
             f"Failed to list KubeAI Model Custom Resource: {e}"
         )
-        raise KubeAIModelException(e.reason, e.body)
+        raise KubeAIModelError(e.reason, e.body)
 
 
 def patch_kubeai_model_custom_resource(
@@ -123,7 +123,7 @@ def patch_kubeai_model_custom_resource(
         print(
             f"Failed to patch KubeAI Model Custom Resource: {e}"
         )
-        raise KubeAIModelException(e.reason, e.body)
+        raise KubeAIModelError(e.reason, e.body)
 
 
 def apply_kubeai_model_custom_resource(model_cr_yaml: Dict[str, Any]):
@@ -154,7 +154,7 @@ def apply_kubeai_model_custom_resource(model_cr_yaml: Dict[str, Any]):
             else:
                 # Create the model if it does not exist in the Kubernetes cluster
                 create_kubeai_model_custom_resource(model_cr_yaml)
-    except KubeAIModelException as e:
+    except KubeAIModelError as e:
         print(
             f"Failed to apply KubeAI Model Custom Resource: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )
@@ -184,7 +184,7 @@ def list_kubeai_pod(namespace: str = "default") -> V1PodList:
         ))
 
         return kubeai_pods
-    except KubernetesPodException as e:
+    except KubernetesPodError as e:
         print(
             f"Failed to list KubeAI Pods: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )
@@ -207,7 +207,7 @@ def log_kubeai_pod(namespace: str = "default"):
         print(
             f"KubeAI Pod log:\n{kubeai_pod_log}"
         )
-    except KubernetesPodException as e:
+    except KubernetesPodError as e:
         print(
             f"Failed to output KubeAI Pod Log: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )

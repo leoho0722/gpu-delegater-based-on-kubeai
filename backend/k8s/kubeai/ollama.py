@@ -7,8 +7,8 @@ from kubernetes.client import (
 )
 
 from k8s.api import corev1_api_list_namespaced_pod, get_pod_ip, watch_corev1_api_namespaced_pod
-from k8s.exception import KubernetesPodException
-from k8s.kubeai.exception import KubeAIOllamaModelPodException
+from k8s.exception import KubernetesPodError
+from k8s.kubeai.exception import KubeAIOllamaModelPodError
 
 
 def list_kubeai_ollama_model_pod(namespace: str = "default") -> V1PodList:
@@ -39,11 +39,11 @@ def list_kubeai_ollama_model_pod(namespace: str = "default") -> V1PodList:
         ))
 
         return kubeai_ollama_model_pods
-    except KubernetesPodException as e:
+    except KubernetesPodError as e:
         print(
             f"Failed to list all of KubeAI Ollama Model Pods: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )
-        raise KubeAIOllamaModelPodException(e.error, e.kwargs)
+        raise KubeAIOllamaModelPodError(e.error, e.kwargs)
 
 
 def watch_kubeai_ollama_model_pod(model_name: str, namespace: str = "default") -> V1Pod:
@@ -96,11 +96,11 @@ def watch_kubeai_ollama_model_pod(model_name: str, namespace: str = "default") -
                 w.stop()
 
                 return pod
-    except KubernetesPodException as e:
+    except KubernetesPodError as e:
         print(
             f"Failed to watch KubeAI Ollama Model Pod: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )
-        raise KubeAIOllamaModelPodException(e.error, e.kwargs)
+        raise KubeAIOllamaModelPodError(e.error, e.kwargs)
 
 
 def list_kubeai_ollama_model_filtered_pod(model: str, namespace: str = "default"):
@@ -122,7 +122,7 @@ def list_kubeai_ollama_model_filtered_pod(model: str, namespace: str = "default"
         ))[0]
 
         return kubeai_ollama_model_filtered_pod
-    except KubeAIOllamaModelPodException as e:
+    except KubeAIOllamaModelPodError as e:
         print(
             f"Failed to list filtered KubeAI Ollama Model Pod: {e.error}\nKubernetes REST ApiException:{e.kwargs}"
         )

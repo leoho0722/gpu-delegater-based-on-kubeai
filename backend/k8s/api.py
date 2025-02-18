@@ -10,7 +10,7 @@ from kubernetes.client import (
 from kubernetes.client.rest import ApiException
 
 from k8s.client import get_k8s_api_client
-from k8s.exception import KubernetesPodException
+from k8s.exception import KubernetesPodError
 
 
 def corev1_api_list_namespaced_pod(namespace: str = 'default') -> V1PodList:
@@ -41,7 +41,7 @@ def corev1_api_list_namespaced_pod(namespace: str = 'default') -> V1PodList:
         print(
             f"Failed to list all of Pods in the {namespace} namespace: {e}"
         )
-        raise KubernetesPodException(e.reason, e.body)
+        raise KubernetesPodError(e.reason, e.body)
 
 
 def corev1_api_read_namespaced_pod_log(pod: V1Pod):
@@ -73,7 +73,7 @@ def corev1_api_read_namespaced_pod_log(pod: V1Pod):
         print(
             f"Failed to read logs of Pod {pod.metadata.name} in {pod.metadata.namespace}: {e}"
         )
-        raise KubernetesPodException(e.reason, e.body)
+        raise KubernetesPodError(e.reason, e.body)
 
 
 def watch_corev1_api_namespaced_pod(namespace: str = 'default') -> Tuple[watch.Watch, Generator[Any | dict | str, Any, None]]:
@@ -105,7 +105,7 @@ def watch_corev1_api_namespaced_pod(namespace: str = 'default') -> Tuple[watch.W
         print(
             f"Failed to watch Pod in the {namespace} namespace: {e}"
         )
-        raise KubernetesPodException(e.reason, e.body)
+        raise KubernetesPodError(e.reason, e.body)
 
 
 def get_pod_ip(pod: V1Pod) -> str:
